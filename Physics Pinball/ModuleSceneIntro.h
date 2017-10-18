@@ -22,12 +22,15 @@ public:
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 
-	PhysBody* sensor;
-	bool sensed;
+	PhysBody* pinball_rect;
+	PhysBody* pinball_boundaries;
+	PhysBody* pinballb_1;
+	PhysBody* pinballb_2;
 
 	SDL_Texture* circle;
 	SDL_Texture* box;
 	SDL_Texture* rick;
+	SDL_Texture* pinball_tex;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;

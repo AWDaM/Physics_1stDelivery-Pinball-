@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
 #include "ModuleRender.h"
+#include "ModuleSceneIntro.h"
 #include "p2Point.h"
 #include "math.h"
 
@@ -32,27 +33,28 @@ bool ModulePhysics::Start()
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
 
+
 	// needed to create joints like mouse joint
-	b2BodyDef bd;
-	ground = world->CreateBody(&bd);
+	//b2BodyDef bd;
+	//ground = world->CreateBody(&bd);
 
-	// big static circle as "ground" in the middle of the screen
-	int x = SCREEN_WIDTH / 2;
-	int y = SCREEN_HEIGHT / 1.5f;
-	int diameter = SCREEN_WIDTH / 2;
+	//// big static circle as "ground" in the middle of the screen
+	//int x = SCREEN_WIDTH / 2;
+	//int y = SCREEN_HEIGHT / 1.5f;
+	//int diameter = SCREEN_WIDTH / 2;
 
-	b2BodyDef body;
-	body.type = b2_staticBody;
-	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
+	//b2BodyDef body;
+	//body.type = b2_staticBody;
+	//body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
-	b2Body* big_ball = world->CreateBody(&body);
+	//b2Body* big_ball = world->CreateBody(&body);
 
-	b2CircleShape shape;
-	shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
+	//b2CircleShape shape;
+	//shape.m_radius = PIXEL_TO_METERS(diameter) * 0.5f;
 
-	b2FixtureDef fixture;
-	fixture.shape = &shape;
-	big_ball->CreateFixture(&fixture);
+	//b2FixtureDef fixture;
+	//fixture.shape = &shape;
+	//big_ball->CreateFixture(&fixture);
 
 	return true;
 }
@@ -100,21 +102,24 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type, bool fixture)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = type;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
 	b2PolygonShape box;
 	box.SetAsBox(PIXEL_TO_METERS(width) * 0.5f, PIXEL_TO_METERS(height) * 0.5f);
 
-	b2FixtureDef fixture;
-	fixture.shape = &box;
-	fixture.density = 1.0f;
+	if (fixture)
+	{
+		b2FixtureDef fixture;
+		fixture.shape = &box;
+		fixture.density = 1.0f;
 
-	b->CreateFixture(&fixture);
+		b->CreateFixture(&fixture);
+	}
 
 	PhysBody* pbody = new PhysBody();
 	pbody->body = b;
@@ -152,10 +157,10 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2BodyType type)
 {
 	b2BodyDef body;
-	body.type = b2_dynamicBody;
+	body.type = type;
 	body.position.Set(PIXEL_TO_METERS(x), PIXEL_TO_METERS(y));
 
 	b2Body* b = world->CreateBody(&body);
@@ -184,6 +189,177 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size)
 	pbody->width = pbody->height = 0;
 
 	return pbody;
+}
+
+void ModulePhysics::CreateP_Boundaries()
+{
+	// Pivot 0, 0
+	int Pinball[208] = {
+		28, 23,
+		19, 34,
+		15, 44,
+		11, 55,
+		10, 69,
+		12, 83,
+		18, 96,
+		41, 122,
+		45, 127,
+		43, 131,
+		33, 147,
+		26, 164,
+		20, 180,
+		15, 198,
+		11, 217,
+		10, 235,
+		10, 251,
+		12, 271,
+		14, 286,
+		18, 301,
+		24, 318,
+		33, 339,
+		23, 346,
+		15, 355,
+		8, 363,
+		4, 372,
+		3, 533,
+		11, 546,
+		28, 562,
+		18, 575,
+		13, 586,
+		9, 595,
+		8, 605,
+		8, 617,
+		8, 683,
+		45, 705,
+		131, 764,
+		132, 784,
+		131, 812,
+		354, 811,
+		354, 764,
+		398, 735,
+		398, 714,
+		402, 707,
+		441, 679,
+		441, 522,
+		430, 504,
+		417, 488,
+		402, 475,
+		381, 464,
+		381, 396,
+		398, 365,
+		411, 330,
+		427, 287,
+		431, 258,
+		432, 221,
+		429, 195,
+		415, 159,
+		406, 144,
+		385, 115,
+		372, 102,
+		350, 85,
+		325, 68,
+		333, 64,
+		348, 70,
+		360, 77,
+		371, 83,
+		380, 90,
+		391, 100,
+		405, 113,
+		415, 126,
+		425, 142,
+		437, 168,
+		445, 194,
+		449, 215,
+		450, 227,
+		450, 742,
+		480, 742,
+		477, 202,
+		471, 170,
+		462, 146,
+		451, 120,
+		438, 102,
+		423, 85,
+		406, 70,
+		386, 56,
+		371, 47,
+		354, 40,
+		302, 23,
+		273, 18,
+		244, 17,
+		217, 19,
+		194, 23,
+		175, 28,
+		158, 34,
+		136, 42,
+		124, 31,
+		114, 22,
+		102, 15,
+		87, 10,
+		74, 8,
+		63, 8,
+		51, 10,
+		40, 14
+	};
+
+	App->scene_intro->pinball_boundaries = CreateChain(0, 0, Pinball, 208, b2_staticBody);
+
+	// Pivot 0, 0
+	int Pinballb_1[60] = {
+		328, 286,
+		322, 296,
+		328, 303,
+		337, 304,
+		350, 298,
+		366, 284,
+		381, 270,
+		391, 246,
+		396, 218,
+		392, 189,
+		382, 168,
+		366, 144,
+		351, 127,
+		335, 114,
+		320, 102,
+		298, 85,
+		297, 120,
+		306, 128,
+		312, 124,
+		326, 134,
+		343, 151,
+		352, 162,
+		361, 177,
+		367, 191,
+		372, 212,
+		372, 232,
+		369, 245,
+		361, 257,
+		351, 270,
+		337, 281
+	};
+
+	App->scene_intro->pinballb_1 = CreateChain(0, 0, Pinballb_1, 60, b2_staticBody);
+
+	// Pivot 0, 0
+	int Pinballb_2[32] = {
+		48, 367,
+		43, 375,
+		43, 390,
+		48, 399,
+		66, 408,
+		80, 417,
+		88, 427,
+		91, 438,
+		94, 550,
+		99, 550,
+		95, 437,
+		83, 415,
+		50, 396,
+		47, 389,
+		47, 377,
+		50, 372
+	};
+
+	App->scene_intro->pinballb_2 = CreateChain(0, 0, Pinballb_2, 32, b2_staticBody);
 }
 
 // 

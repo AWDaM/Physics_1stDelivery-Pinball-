@@ -11,7 +11,7 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 {
 	circle = box = rick = NULL;
 	ray_on = false;
-	sensed = false;
+
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -28,9 +28,15 @@ bool ModuleSceneIntro::Start()
 	circle = App->textures->Load("pinball/wheel.png"); 
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
+	pinball_tex = App->textures->Load("pinball/Pinball small.png");
+
+	pinball_rect = App->physics->CreateRectangle(492/2, 798/2, 492, 798, b2_staticBody, false);
+
+	App->physics->CreateP_Boundaries();
+
+
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
-	sensor = App->physics->CreateRectangleSensor(SCREEN_WIDTH / 2, SCREEN_HEIGHT, SCREEN_WIDTH, 50);
 
 	return ret;
 }
@@ -61,7 +67,7 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50));
+		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, b2_dynamicBody, true));
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
@@ -102,7 +108,7 @@ update_status ModuleSceneIntro::Update()
 			30, 62
 		};
 
-		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64));
+		ricks.add(App->physics->CreateChain(App->input->GetMouseX(), App->input->GetMouseY(), rick_head, 64, b2_dynamicBody));
 	}
 
 	// Prepare for raycast ------------------------------------------------------
@@ -151,6 +157,11 @@ update_status ModuleSceneIntro::Update()
 		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
 		c = c->next;
 	}
+
+	//-----------------------Blit the pinball texture
+	int x, y;
+	pinball_rect->GetPosition(x, y);
+	App->renderer->Blit(pinball_tex, x, y, NULL, 1.0f);
 
 	// ray -----------------
 	if(ray_on == true)
