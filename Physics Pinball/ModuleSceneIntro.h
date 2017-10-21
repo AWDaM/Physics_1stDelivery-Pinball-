@@ -27,6 +27,11 @@ public:
 	PhysBody* pinballb_1;
 	PhysBody* pinballb_2;
 	PhysBody* pinballb_3;
+	PhysBody* pinballb_4;
+	PhysBody* pinballb_5;
+	PhysBody* pinballb_6;
+	PhysBody* pinballb_7;
+	PhysBody* pinballb_8;
 
 	SDL_Texture* circle;
 	SDL_Texture* box;

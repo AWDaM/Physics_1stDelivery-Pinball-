@@ -340,26 +340,25 @@ void ModulePhysics::CreateP_Boundaries()
 	App->scene_intro->pinballb_1 = CreateChain(0, 0, Pinballb_1, 60, b2_staticBody);
 
 	// Pivot 0, 0
-	int Pinballb_2[32] = {
-		48, 367,
-		43, 375,
-		43, 390,
-		48, 399,
-		66, 408,
-		80, 417,
-		88, 427,
-		91, 438,
-		94, 550,
-		99, 550,
-		95, 437,
-		83, 415,
-		50, 396,
-		47, 389,
-		47, 377,
-		50, 372
-	};// Pivot 0, 0
+	int Pinballb_2[26] = {
+		52, 375,
+		58, 398,
+		66, 438,
+		68, 463,
+		63, 488,
+		57, 507,
+		56, 538,
+		62, 538,
+		62, 508,
+		70, 490,
+		75, 475,
+		73, 437,
+		67, 396
+	};
 
-	App->scene_intro->pinballb_2 = CreateChain(0, 0, Pinballb_2, 32, b2_staticBody);
+	// Pivot 0.000000, 0.000000
+
+	App->scene_intro->pinballb_2 = CreateChain(0, 0, Pinballb_2, 26, b2_staticBody);
 
 	int Pinballb_3[64] = {
 		108, 175,
@@ -397,6 +396,77 @@ void ModulePhysics::CreateP_Boundaries()
 	};
 
 	App->scene_intro->pinballb_3 = CreateChain(0, 0, Pinballb_3, 64, b2_staticBody);
+
+	int Pinballb_4[12] = {
+		106, 363,
+		130, 381,
+		161, 435,
+		157, 437,
+		135, 398,
+		110, 374
+	};
+	App->scene_intro->pinballb_4 = CreateChain(0, 0, Pinballb_4, 12, b2_staticBody);
+
+
+	// Pivot 0, 0
+	int Pinballb_5[40] = {
+		182, 332,
+		103, 298,
+		91, 282,
+		82, 257,
+		82, 225,
+		79, 215,
+		73, 216,
+		69, 223,
+		67, 244,
+		70, 277,
+		77, 326,
+		87, 324,
+		98, 325,
+		116, 329,
+		137, 337,
+		147, 344,
+		160, 354,
+		172, 369,
+		207, 420,
+		167, 341
+	};
+
+	App->scene_intro->pinballb_5 = CreateChain(0, 0, Pinballb_5, 40, b2_staticBody);
+
+	int Pinballb_6[10] = {
+		51, 616,
+		49, 656,
+		151, 725,
+		164, 721,
+		57, 650
+	};
+
+	App->scene_intro->pinballb_6 = CreateChain(0, 0, Pinballb_6, 10, b2_staticBody);
+
+	// Pivot 0, 0
+	int Pinballb_7[12] = {
+		402, 570,
+		402, 659,
+		321, 718,
+		330, 722,
+		413, 662,
+		413, 570
+	};
+
+	App->scene_intro->pinballb_7 = CreateChain(0, 0, Pinballb_7, 12, b2_staticBody);
+
+	// Pivot 0, 0
+	int Pinballb_8[10] = {
+		203, 102,
+		202, 156,
+		266, 156,
+		266, 100,
+		237, 86
+	};
+
+	App->scene_intro->pinballb_8 = CreateChain(0, 0, Pinballb_8, 10, b2_staticBody);
+
 }
 
 // 
