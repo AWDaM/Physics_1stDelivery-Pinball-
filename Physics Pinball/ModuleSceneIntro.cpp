@@ -34,6 +34,7 @@ bool ModuleSceneIntro::Start()
 
 	App->physics->CreateP_Boundaries();
 	App->physics->CreateBouncers();
+	App->physics->CreateSpring();
 
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
@@ -62,8 +63,9 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10));
+		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10, b2_dynamicBody));
 		circles.getLast()->data->listener = this;
+		circles.getLast()->data->body->SetBullet(true);
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)

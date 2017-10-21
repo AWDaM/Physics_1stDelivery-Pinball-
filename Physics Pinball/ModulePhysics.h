@@ -28,6 +28,7 @@ public:
 	int width, height;
 	b2Body* body;
 	Module* listener;
+	int score;
 };
 
 // Module --------------------------------------
@@ -42,12 +43,13 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius);
+	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType bodyType, float restCoeficient = 0.5f);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type, bool fixture);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType type, float restCoeficient = 0.5f);
 	void CreateP_Boundaries();
 	void CreateBouncers();
+	void CreateSpring();
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 

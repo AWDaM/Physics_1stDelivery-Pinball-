@@ -23,11 +23,24 @@ public:
 	p2List<PhysBody*> ricks;
 
 	PhysBody* pinball_rect;
+	PhysBody* spring;
 	PhysBody* pinball_boundaries;
 	PhysBody* pinballb_1;
 	PhysBody* pinballb_2;
+	PhysBody* pinballb_3;
+	PhysBody* pinballb_4;
+	PhysBody* pinballb_5;
+	PhysBody* pinballb_6;
+	PhysBody* pinballb_7;
+	PhysBody* pinballb_8;
+	PhysBody* pinballb_9;
+	PhysBody* pinballb_10;
 	PhysBody* triangleBouncer1;
 	PhysBody* triangleBouncer2;
+	PhysBody* circleBouncer1;
+	PhysBody* circleBouncer2;
+	PhysBody* circleBouncer3;
+	PhysBody* circleBouncer4;
 
 	SDL_Texture* circle;
 	SDL_Texture* box;
