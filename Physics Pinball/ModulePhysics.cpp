@@ -157,7 +157,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2BodyType type)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2BodyType type, float restCoeficient)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -178,6 +178,7 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2Body
 
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
+	fixture.restitution = restCoeficient;
 
 	b->CreateFixture(&fixture);
 
@@ -359,9 +360,43 @@ void ModulePhysics::CreateP_Boundaries()
 		50, 372
 	};
 
-	App->scene_intro->pinballb_2 = CreateChain(0, 0, Pinballb_2, 32, b2_staticBody);
+	App->scene_intro->pinballb_2 = CreateChain(0, 0, Pinballb_2, 32, b2_staticBody);	
 }
 
+void ModulePhysics::CreateBouncers()
+{
+	int TriangleBouncer1[24] = {
+		120, 567,
+		162, 654,
+		164, 660,
+		162, 663,
+		157, 663,
+		114, 639,
+		110, 636,
+		109, 631,
+		109, 567,
+		111, 562,
+		116, 560,
+		118, 563
+	};
+
+	App->scene_intro->triangleBouncer1 = CreateChain(0, 0, TriangleBouncer1, 24, b2_staticBody, 4);
+
+	int TriangleBouncer2[18] = {
+		367, 563,
+		371, 570,
+		371, 632,
+		369, 638,
+		364, 641,
+		323, 664,
+		317, 664,
+		317, 658,
+		361, 566
+	};
+
+	App->scene_intro->triangleBouncer2 = CreateChain(0, 0, TriangleBouncer2, 18, b2_staticBody, 4);
+
+}
 // 
 update_status ModulePhysics::PostUpdate()
 {
