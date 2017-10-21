@@ -71,7 +71,7 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		circles.add(App->physics->CreateCircle(App->input->GetMouseX(), App->input->GetMouseY(), 10, b2_dynamicBody));
+		circles.add(App->physics->CreateCircle(465, 640, 10, b2_dynamicBody));
 		circles.getLast()->data->listener = this;
 		circles.getLast()->data->body->SetBullet(true);
 	}
@@ -84,6 +84,12 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
 		Lflipper_rectangle->body->ApplyAngularImpulse(5000, true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		spring->body->ApplyLinearImpulse({ 0, 10 }, { 0,0 }, true);
+		
 	}
 
 	// Prepare for raycast ------------------------------------------------------

@@ -24,6 +24,7 @@ public:
 
 	PhysBody* pinball_rect;
 	PhysBody* spring;
+	PhysBody* springPivot;
 	PhysBody* pinball_boundaries;
 	PhysBody* pinballb_1;
 	PhysBody* pinballb_2;

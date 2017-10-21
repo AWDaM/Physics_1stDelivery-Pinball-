@@ -103,7 +103,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType bodyT
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type, bool fixture)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type, bool fixture, float restCoeficient)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -118,6 +118,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 		b2FixtureDef fixture;
 		fixture.shape = &box;
 		fixture.density = 1.0f;
+		fixture.restitution = restCoeficient;
 
 		b->CreateFixture(&fixture);
 	}
@@ -519,8 +520,27 @@ void ModulePhysics::CreateBouncers()
 
 void ModulePhysics::CreateSpring()
 {
-	App->scene_intro->spring = CreateRectangle(465, 670, 25, 25, b2_dynamicBody, true);
-	//b2PrismaticJoint springJoint;
+	App->scene_intro->spring = CreateRectangle(465, 650, 25, 25, b2_dynamicBody, true);
+	App->scene_intro->springPivot = CreateRectangle(465, 670, 1, 1, b2_staticBody, false);
+
+	b2PrismaticJointDef springJointDef;
+
+	springJointDef.bodyA = App->scene_intro->spring->body;
+	springJointDef.bodyB = App->scene_intro->springPivot->body;
+
+	springJointDef.localAnchorA.SetZero();
+	springJointDef.localAnchorB.SetZero();
+
+	springJointDef.localAxisA = { 0, 1 };
+
+	springJointDef.enableLimit = true;
+	springJointDef.upperTranslation = 0;
+	springJointDef.lowerTranslation = -1;
+	springJointDef.maxMotorForce = 100;
+	springJointDef.motorSpeed = 100;
+	springJointDef.enableMotor = true;
+
+	b2PrismaticJoint*joint = (b2PrismaticJoint*)world->CreateJoint(&springJointDef);
 
 }
 
