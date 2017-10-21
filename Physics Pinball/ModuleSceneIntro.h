@@ -33,6 +33,9 @@ public:
 	PhysBody* pinballb_7;
 	PhysBody* pinballb_8;
 
+	PhysBody* Rflipper_circle;
+	PhysBody* Rflipper_rectangle;
+
 	SDL_Texture* circle;
 	SDL_Texture* box;
 	SDL_Texture* rick;

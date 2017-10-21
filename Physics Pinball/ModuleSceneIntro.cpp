@@ -33,6 +33,7 @@ bool ModuleSceneIntro::Start()
 	pinball_rect = App->physics->CreateRectangle(492/2, 798/2, 492, 798, b2_staticBody, false);
 
 	App->physics->CreateP_Boundaries();
+	App->physics->CreateP_Flipper(Rflipper_circle, Rflipper_rectangle);
 
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
