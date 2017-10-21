@@ -482,7 +482,7 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 
 	//two shapes
 	b2PolygonShape boxShape;
-	boxShape.SetAsBox(PIXEL_TO_METERS(40), PIXEL_TO_METERS(7));
+	boxShape.SetAsBox(PIXEL_TO_METERS(32), PIXEL_TO_METERS(7));
 
 	b2CircleShape circleShape;
 	circleShape.m_radius = PIXEL_TO_METERS(10);
@@ -490,9 +490,9 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 
 	//and circle a little to the right
 	if(rightside)
-		bodyDefB.position.Set(PIXEL_TO_METERS(317), PIXEL_TO_METERS(733));
+		bodyDefB.position.Set(PIXEL_TO_METERS(317), PIXEL_TO_METERS(735));
 	else
-		bodyDefB.position.Set(PIXEL_TO_METERS(317), PIXEL_TO_METERS(733));
+		bodyDefB.position.Set(PIXEL_TO_METERS(165), PIXEL_TO_METERS(735));
 
 	fixtureDef.shape = &circleShape;
 	b2Body* bodyB = world->CreateBody(&bodyDefB);
@@ -514,19 +514,32 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 	revoluteJointDef.collideConnected = false;
 	revoluteJointDef.enableLimit = true;
 	revoluteJointDef.referenceAngle = 0;
-	revoluteJointDef.lowerAngle = -45 * DEGTORAD;
-	revoluteJointDef.upperAngle = 35 * DEGTORAD;
+	if (rightside)
+	{
+		revoluteJointDef.lowerAngle = -32 * DEGTORAD;
+		revoluteJointDef.upperAngle = 32 * DEGTORAD;
+	}
+	else
+	{
+		revoluteJointDef.lowerAngle = -32 * DEGTORAD;
+		revoluteJointDef.upperAngle = 32 * DEGTORAD;
+	}
 
 	if(rightside)
-		revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), PIXEL_TO_METERS(0));
+		revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(32), PIXEL_TO_METERS(0));
 	else
-		revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), PIXEL_TO_METERS(0));
+		revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(-32), PIXEL_TO_METERS(0));
 
 	revoluteJointDef.localAnchorB.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));//center of the circle
 	b2RevoluteJoint*joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJointDef);
 
 	pbodyA->body = bodyA;
+	bodyA->SetUserData(pbodyA);
+	pbodyA->width = pbodyA->height = 0;
+
 	pbodyB->body = bodyB;
+	bodyB->SetUserData(pbodyB);
+	pbodyB->width = pbodyB->height = 0;
 }
 
 // 
