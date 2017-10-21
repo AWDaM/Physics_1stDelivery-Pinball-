@@ -469,51 +469,64 @@ void ModulePhysics::CreateP_Boundaries()
 
 }
 
-void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB)
+void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rightside)
 {
-	b2BodyDef bodyDefA;
-	bodyDefA.type = b2_staticBody;
-
-
 	b2BodyDef bodyDefB;
-	bodyDefB.type = b2_dynamicBody;
+	bodyDefB.type = b2_staticBody;
+
+
+	b2BodyDef bodyDefA;
+	bodyDefA.type = b2_dynamicBody;
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1;
 
 	//two shapes
 	b2PolygonShape boxShape;
-	boxShape.SetAsBox(PIXEL_TO_METERS(40), PIXEL_TO_METERS(10));
+	boxShape.SetAsBox(PIXEL_TO_METERS(40), PIXEL_TO_METERS(7));
+
 	b2CircleShape circleShape;
 	circleShape.m_radius = PIXEL_TO_METERS(10);
 
 
 	//and circle a little to the right
-	/*bodyDefA.position.Set(PIXEL_TO_METERS(317), PIXEL_TO_METERS(733));*/
-	bodyDefA.position.Set(PIXEL_TO_METERS(250), PIXEL_TO_METERS(700));
-	fixtureDef.shape = &circleShape;
-	b2Body* bodyA = world->CreateBody(&bodyDefA);
-	bodyA->CreateFixture(&fixtureDef);
+	if(rightside)
+		bodyDefB.position.Set(PIXEL_TO_METERS(317), PIXEL_TO_METERS(733));
+	else
+		bodyDefB.position.Set(PIXEL_TO_METERS(317), PIXEL_TO_METERS(733));
 
-	//make box a little to the left
-	bodyDefB.position.Set(PIXEL_TO_METERS (250), PIXEL_TO_METERS(700));
-	fixtureDef.shape = &boxShape;
+	fixtureDef.shape = &circleShape;
 	b2Body* bodyB = world->CreateBody(&bodyDefB);
 	bodyB->CreateFixture(&fixtureDef);
 
+	//make box a little to the left
+	if(rightside)
+		bodyDefA.position.Set(PIXEL_TO_METERS(317), PIXEL_TO_METERS(733));
+	else
+		bodyDefA.position.Set(PIXEL_TO_METERS(317), PIXEL_TO_METERS(733));
+
+	fixtureDef.shape = &boxShape;
+	b2Body* bodyA = world->CreateBody(&bodyDefA);
+	bodyA->CreateFixture(&fixtureDef);
+
 	b2RevoluteJointDef revoluteJointDef;
-	revoluteJointDef.bodyA = bodyB;
-	revoluteJointDef.bodyB = bodyA;
+	revoluteJointDef.bodyA = bodyA;
+	revoluteJointDef.bodyB = bodyB;
 	revoluteJointDef.collideConnected = false;
-	revoluteJointDef.enableLimit = false;
+	revoluteJointDef.enableLimit = true;
 	revoluteJointDef.referenceAngle = 0;
 	revoluteJointDef.lowerAngle = -45 * DEGTORAD;
-	revoluteJointDef.upperAngle = 45 * DEGTORAD;
-	revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), PIXEL_TO_METERS(0));//the top right corner of the box
+	revoluteJointDef.upperAngle = 35 * DEGTORAD;
+
+	if(rightside)
+		revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), PIXEL_TO_METERS(0));
+	else
+		revoluteJointDef.localAnchorA.Set(PIXEL_TO_METERS(30), PIXEL_TO_METERS(0));
+
 	revoluteJointDef.localAnchorB.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));//center of the circle
-	revoluteJointDef.enableMotor = true;
-	revoluteJointDef.maxMotorTorque = 20;
-	revoluteJointDef.motorSpeed = -360 * DEGTORAD;
 	b2RevoluteJoint*joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJointDef);
+
+	pbodyA->body = bodyA;
+	pbodyB->body = bodyB;
 }
 
 // 
