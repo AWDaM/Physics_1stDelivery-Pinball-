@@ -28,7 +28,7 @@ public:
 	int width, height;
 	b2Body* body;
 	Module* listener;
-	int score;
+	int score = 0;
 };
 
 // Module --------------------------------------

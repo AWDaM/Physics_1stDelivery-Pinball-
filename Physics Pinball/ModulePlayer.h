@@ -14,5 +14,5 @@ public:
 	bool CleanUp();
 
 public:
-
+	int score;
 };
