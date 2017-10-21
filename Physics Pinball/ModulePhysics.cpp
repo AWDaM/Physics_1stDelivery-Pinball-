@@ -502,6 +502,7 @@ void ModulePhysics::CreateBouncers()
 	};
 
 	App->scene_intro->triangleBouncer1 = CreateChain(0, 0, TriangleBouncer1, 8, b2_staticBody, 4);
+	App->scene_intro->triangleBouncer1->score = 10;
 
 	int TriangleBouncer2[8] = {
 		120, 564,
@@ -511,11 +512,16 @@ void ModulePhysics::CreateBouncers()
 	};
 
 	App->scene_intro->triangleBouncer2 = CreateChain(0, 0, TriangleBouncer2, 8, b2_staticBody, 4);
+	App->scene_intro->triangleBouncer2->score = 10;
 
 	App->scene_intro->circleBouncer1 = CreateCircle(200, 222, 22, b2_staticBody, 4);
 	App->scene_intro->circleBouncer2 = CreateCircle(287, 213, 22, b2_staticBody, 4);
 	App->scene_intro->circleBouncer3 = CreateCircle(69, 60, 22, b2_staticBody, 4);
 	App->scene_intro->circleBouncer4 = CreateCircle(23, 472, 17, b2_staticBody, 4);	
+	App->scene_intro->circleBouncer1->score = 10;
+	App->scene_intro->circleBouncer2->score = 10;
+	App->scene_intro->circleBouncer3->score = 10;
+	App->scene_intro->circleBouncer4->score = 10;
 }
 
 void ModulePhysics::CreateSpring()
@@ -589,6 +595,8 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 	revoluteJointDef.collideConnected = false;
 	revoluteJointDef.enableLimit = true;
 	revoluteJointDef.referenceAngle = 0;
+
+ //1 turn per second counter-clockwise
 	if (rightside)
 	{
 		revoluteJointDef.lowerAngle = -32 * DEGTORAD;
@@ -607,6 +615,7 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 
 	revoluteJointDef.localAnchorB.Set(PIXEL_TO_METERS(0), PIXEL_TO_METERS(0));//center of the circle
 	b2RevoluteJoint*joint = (b2RevoluteJoint*)world->CreateJoint(&revoluteJointDef);
+
 
 	pbodyA->body = bodyA;
 	bodyA->SetUserData(pbodyA);
