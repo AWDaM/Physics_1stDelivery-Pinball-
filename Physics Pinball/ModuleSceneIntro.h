@@ -42,6 +42,11 @@ public:
 	PhysBody* circleBouncer3;
 	PhysBody* circleBouncer4;
 
+	PhysBody* Rflipper_circle;
+	PhysBody* Rflipper_rectangle;
+	PhysBody* Lflipper_circle;
+	PhysBody* Lflipper_rectangle;
+
 	SDL_Texture* circle;
 	SDL_Texture* box;
 	SDL_Texture* rick;

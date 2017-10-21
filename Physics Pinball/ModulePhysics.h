@@ -50,6 +50,7 @@ public:
 	void CreateP_Boundaries();
 	void CreateBouncers();
 	void CreateSpring();
+	void CreateP_Flipper(PhysBody* bodyA, PhysBody* bodyB, bool rightside);
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
