@@ -29,6 +29,7 @@ public:
 	b2Body* body;
 	Module* listener;
 	int score = 0;
+	b2Vec2 maxSpeed;
 };
 
 // Module --------------------------------------
@@ -51,6 +52,7 @@ public:
 	void CreateBouncers();
 	void CreateSpring();
 	void CreateP_Flipper(PhysBody* bodyA, PhysBody* bodyB, bool rightside);
+	void MaxSpeedCheckP(PhysBody* Pbody);
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 

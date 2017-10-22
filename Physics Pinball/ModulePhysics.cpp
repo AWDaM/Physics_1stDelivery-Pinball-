@@ -99,6 +99,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType bodyT
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
+	pbody->maxSpeed = { 20,20 };
 
 	return pbody;
 }
@@ -501,7 +502,7 @@ void ModulePhysics::CreateBouncers()
 		368, 562
 	};
 
-	App->scene_intro->triangleBouncer1 = CreateChain(0, 0, TriangleBouncer1, 8, b2_staticBody, 4);
+	App->scene_intro->triangleBouncer1 = CreateChain(0, 0, TriangleBouncer1, 8, b2_staticBody, 3);
 	App->scene_intro->triangleBouncer1->score = 10;
 
 	int TriangleBouncer2[8] = {
@@ -511,13 +512,13 @@ void ModulePhysics::CreateBouncers()
 		110, 562
 	};
 
-	App->scene_intro->triangleBouncer2 = CreateChain(0, 0, TriangleBouncer2, 8, b2_staticBody, 4);
+	App->scene_intro->triangleBouncer2 = CreateChain(0, 0, TriangleBouncer2, 8, b2_staticBody, 3);
 	App->scene_intro->triangleBouncer2->score = 10;
 
-	App->scene_intro->circleBouncer1 = CreateCircle(200, 222, 22, b2_staticBody, 4);
-	App->scene_intro->circleBouncer2 = CreateCircle(287, 213, 22, b2_staticBody, 4);
-	App->scene_intro->circleBouncer3 = CreateCircle(69, 60, 22, b2_staticBody, 4);
-	App->scene_intro->circleBouncer4 = CreateCircle(23, 472, 17, b2_staticBody, 4);	
+	App->scene_intro->circleBouncer1 = CreateCircle(200, 222, 22, b2_staticBody, 2);
+	App->scene_intro->circleBouncer2 = CreateCircle(287, 213, 22, b2_staticBody, 2);
+	App->scene_intro->circleBouncer3 = CreateCircle(69, 60, 22, b2_staticBody, 2);
+	App->scene_intro->circleBouncer4 = CreateCircle(23, 472, 17, b2_staticBody, 2);	
 	App->scene_intro->circleBouncer1->score = 10;
 	App->scene_intro->circleBouncer2->score = 10;
 	App->scene_intro->circleBouncer3->score = 10;
@@ -558,6 +559,8 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 
 	b2BodyDef bodyDefA;
 	bodyDefA.type = b2_dynamicBody;
+	bodyDefA.gravityScale = 3;
+	bodyDefA.bullet = true;
 	b2FixtureDef fixtureDef;
 	fixtureDef.density = 1;
 
@@ -599,13 +602,13 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
  //1 turn per second counter-clockwise
 	if (rightside)
 	{
-		revoluteJointDef.lowerAngle = -32 * DEGTORAD;
+		revoluteJointDef.lowerAngle = -20 * DEGTORAD;
 		revoluteJointDef.upperAngle = 32 * DEGTORAD;
 	}
 	else
 	{
 		revoluteJointDef.lowerAngle = -32 * DEGTORAD;
-		revoluteJointDef.upperAngle = 32 * DEGTORAD;
+		revoluteJointDef.upperAngle = 20 * DEGTORAD;
 	}
 
 	if(rightside)
@@ -624,6 +627,14 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 	pbodyB->body = bodyB;
 	bodyB->SetUserData(pbodyB);
 	pbodyB->width = pbodyB->height = 0;
+}
+
+void ModulePhysics::MaxSpeedCheckP(PhysBody * Pbody)
+{
+	if (Pbody->body->GetLinearVelocity().x > Pbody->maxSpeed.x && Pbody->body->GetLinearVelocity().y > Pbody->maxSpeed.y)
+	{
+		Pbody->body->SetLinearVelocity(Pbody->maxSpeed);
+	}
 }
 
 // 

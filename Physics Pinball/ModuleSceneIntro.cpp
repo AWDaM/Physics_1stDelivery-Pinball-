@@ -39,11 +39,11 @@ bool ModuleSceneIntro::Start()
 
 	Rflipper_circle = new PhysBody;
 	Rflipper_rectangle = new PhysBody;
-	App->physics->CreateP_Flipper(Rflipper_circle, Rflipper_rectangle, true);
+	App->physics->CreateP_Flipper(Rflipper_rectangle, Rflipper_circle, true);
 
 	Lflipper_circle = new PhysBody;
 	Lflipper_rectangle = new PhysBody;
-	App->physics->CreateP_Flipper(Lflipper_circle, Lflipper_rectangle, false);
+	App->physics->CreateP_Flipper(Lflipper_rectangle, Lflipper_circle, false);
 
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
@@ -63,12 +63,12 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	/*if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		ray_on = !ray_on;
 		ray.x = App->input->GetMouseX();
 		ray.y = App->input->GetMouseY();
-	}
+	}*/
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -82,10 +82,14 @@ update_status ModuleSceneIntro::Update()
 		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, b2_dynamicBody, true));
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		//Rflipper_rectangle->body->Apply(5000, true);
-		Rflipper_rectangle->body->ApplyAngularImpulse(500, true);
+		Rflipper_rectangle->body->ApplyTorque(500, true);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		Lflipper_rectangle->body->ApplyTorque(-500, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
@@ -95,7 +99,11 @@ update_status ModuleSceneIntro::Update()
 	}
 
 	// Prepare for raycast ------------------------------------------------------
-	
+	for (int i = 0; i < circles.count(); i++)
+	{
+		App->physics->MaxSpeedCheckP(circles.at(i,circle))
+	}
+
 	iPoint mouse;
 	mouse.x = App->input->GetMouseX();
 	mouse.y = App->input->GetMouseY();
