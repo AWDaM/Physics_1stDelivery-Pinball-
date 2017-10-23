@@ -18,7 +18,7 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 public:
-	p2List<PhysBody*> circles;
+	PhysBody* ball;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 
@@ -55,4 +55,5 @@ public:
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
+	bool ball_active;
 };

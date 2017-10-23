@@ -48,6 +48,7 @@ bool ModuleSceneIntro::Start()
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
+	ball_active = false;
 
 	return ret;
 }
@@ -70,24 +71,22 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}*/
 
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !ball_active)
 	{
-		circles.add(App->physics->CreateCircle(465, 640, 10, b2_dynamicBody));
-		circles.getLast()->data->listener = this;
-		circles.getLast()->data->body->SetBullet(true);
+		ball = App->physics->CreateCircle(465, 640, 10, b2_dynamicBody);
+		ball_active = true;
+		ball->listener = this;
+		ball->body->SetBullet(true);
+		LOG("MASS:%i", ball->body->GetMass());
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		boxes.add(App->physics->CreateRectangle(App->input->GetMouseX(), App->input->GetMouseY(), 100, 50, b2_dynamicBody, true));
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
 		Rflipper_rectangle->body->ApplyTorque(500, true);
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
 		Lflipper_rectangle->body->ApplyTorque(-500, true);
 	}
@@ -95,14 +94,16 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		spring->body->ApplyLinearImpulse({ 0, 10 }, { 0,0 }, true);
+
 		
 	}
 
 	// Prepare for raycast ------------------------------------------------------
-	for (int i = 0; i < circles.count(); i++)
+	if (ball_active)
 	{
-		App->physics->MaxSpeedCheckP(circles.at(i,circle))
+		App->physics->MaxSpeedCheckP(ball);
 	}
+
 
 	iPoint mouse;
 	mouse.x = App->input->GetMouseX();
@@ -112,42 +113,13 @@ update_status ModuleSceneIntro::Update()
 	fVector normal(0.0f, 0.0f);
 
 	// All draw functions ------------------------------------------------------
-	p2List_item<PhysBody*>* c = circles.getFirst();
-
-	while(c != NULL)
+	if (ball_active)
 	{
 		int x, y;
-		c->data->GetPosition(x, y);
-		if(c->data->Contains(App->input->GetMouseX(), App->input->GetMouseY()))
-			App->renderer->Blit(circle, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
+		ball->GetPosition(x, y);
+		App->renderer->Blit(circle, x, y, NULL, 1.0F, ball->GetRotation());
 	}
 
-	c = boxes.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(box, x, y, NULL, 1.0f, c->data->GetRotation());
-		if(ray_on)
-		{
-			int hit = c->data->RayCast(ray.x, ray.y, mouse.x, mouse.y, normal.x, normal.y);
-			if(hit >= 0)
-				ray_hit = hit;
-		}
-		c = c->next;
-	}
-
-	c = ricks.getFirst();
-
-	while(c != NULL)
-	{
-		int x, y;
-		c->data->GetPosition(x, y);
-		App->renderer->Blit(rick, x, y, NULL, 1.0f, c->data->GetRotation());
-		c = c->next;
-	}
 
 	//-----------------------Blit the pinball texture
 	int x, y;
