@@ -16,6 +16,7 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+	void SpawnNextBall();
 
 public:
 	PhysBody* ball;
@@ -42,6 +43,7 @@ public:
 	PhysBody* circleBouncer2;
 	PhysBody* circleBouncer3;
 	PhysBody* circleBouncer4;
+	PhysBody* dyingSensor;
 
 	PhysBody* Rflipper_circle;
 	PhysBody* Rflipper_rectangle;
@@ -52,6 +54,7 @@ public:
 	SDL_Texture* box;
 	SDL_Texture* rick;
 	SDL_Texture* pinball_tex;
+	SDL_Texture* flipper_tex;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;

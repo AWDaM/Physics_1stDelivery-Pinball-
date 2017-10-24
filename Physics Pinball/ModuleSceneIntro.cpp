@@ -30,6 +30,7 @@ bool ModuleSceneIntro::Start()
 	box = App->textures->Load("pinball/crate.png");
 	rick = App->textures->Load("pinball/rick_head.png");
 	pinball_tex = App->textures->Load("pinball/Pinball small.png");
+	flipper_tex = App->textures->Load("pinball/flipper.png");
 
 	pinball_rect = App->physics->CreateRectangle(492/2, 798/2, 492, 798, b2_staticBody, false);
 
@@ -45,6 +46,7 @@ bool ModuleSceneIntro::Start()
 	Lflipper_rectangle = new PhysBody;
 	App->physics->CreateP_Flipper(Lflipper_rectangle, Lflipper_circle, false);
 
+	dyingSensor = App->physics->CreateRectangleSensor(200, 850, 700, 100);
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
@@ -126,6 +128,11 @@ update_status ModuleSceneIntro::Update()
 	pinball_rect->GetPosition(x, y);
 	App->renderer->Blit(pinball_tex, x, y, NULL, 1.0f);
 
+	Lflipper_circle->GetPosition(x, y);
+	App->renderer->Blit(flipper_tex, x - 75, y - 15, NULL, 1.0f, Lflipper_rectangle->GetRotation());
+	Rflipper_circle->GetPosition(x, y);
+	App->renderer->Blit(flipper_tex, x - 65, y - 15, NULL, 1.0f, Rflipper_rectangle->GetRotation(), SDL_FLIP_HORIZONTAL);
+
 	// ray -----------------
 	if(ray_on == true)
 	{
@@ -146,6 +153,9 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	App->player->score += bodyA->score + bodyB->score;
 
+	if (bodyB == dyingSensor)
+		SpawnNextBall();
+
 	//App->audio->PlayFx(bonus_fx);
 
 	/*
@@ -160,4 +170,9 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		bodyB->GetPosition(x, y);
 		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
 	}*/
+}
+
+void ModuleSceneIntro::SpawnNextBall()
+{
+	
 }

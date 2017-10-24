@@ -30,6 +30,7 @@ public:
 	Module* listener;
 	int score = 0;
 	b2Vec2 maxSpeed;
+
 };
 
 // Module --------------------------------------
