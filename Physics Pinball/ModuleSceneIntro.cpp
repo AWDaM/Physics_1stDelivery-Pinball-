@@ -37,6 +37,7 @@ bool ModuleSceneIntro::Start()
 	App->physics->CreateP_Boundaries();
 	App->physics->CreateBouncers();
 	App->physics->CreateSpring();
+	App->physics->CreateP_Holes();
 
 	Rflipper_circle = new PhysBody;
 	Rflipper_rectangle = new PhysBody;
@@ -46,11 +47,13 @@ bool ModuleSceneIntro::Start()
 	Lflipper_rectangle = new PhysBody;
 	App->physics->CreateP_Flipper(Lflipper_rectangle, Lflipper_circle, false);
 
+
 	dyingSensor = App->physics->CreateRectangleSensor(200, 850, 700, 100);
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	ball_active = false;
+	ball_stopped = false;
 
 	return ret;
 }
@@ -96,10 +99,12 @@ update_status ModuleSceneIntro::Update()
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		spring->body->ApplyLinearImpulse({ 0, 10 }, { 0,0 }, true);
-
-		
 	}
 
+	if (ball_stopped)
+	{
+		Stopped_ball_timer();
+	}
 	// Prepare for raycast ------------------------------------------------------
 	if (ball_active)
 	{
@@ -155,7 +160,13 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	if (bodyB == dyingSensor)
 		SpawnNextBall();
-
+	
+	if (bodyB == hole_1 || bodyB == hole_2)
+	{
+		bodyA->body->SetType(b2_staticBody);
+		ball_stopped = true;
+		initial_time = SDL_GetTicks();
+	}
 	//App->audio->PlayFx(bonus_fx);
 
 	/*
@@ -175,4 +186,13 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 void ModuleSceneIntro::SpawnNextBall()
 {
 	
+}
+
+void ModuleSceneIntro::Stopped_ball_timer()
+{
+	if (initial_time + SDL_GetTicks() >= total_stoptime)
+	{
+		ball->body->SetType(b2_dynamicBody);
+		ball_stopped = false;
+	}
 }

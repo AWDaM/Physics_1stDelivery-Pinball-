@@ -17,6 +17,7 @@ public:
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 	void SpawnNextBall();
+	void Stopped_ball_timer();
 
 public:
 	PhysBody* ball;
@@ -44,6 +45,8 @@ public:
 	PhysBody* circleBouncer3;
 	PhysBody* circleBouncer4;
 	PhysBody* dyingSensor;
+	PhysBody* hole_1;
+	PhysBody* hole_2;
 
 	PhysBody* Rflipper_circle;
 	PhysBody* Rflipper_rectangle;
@@ -59,4 +62,7 @@ public:
 	p2Point<int> ray;
 	bool ray_on;
 	bool ball_active;
+	bool ball_stopped = false;
+	uint initial_time;
+	uint total_stoptime = 3;
 };

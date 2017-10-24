@@ -77,7 +77,7 @@ update_status ModulePhysics::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType bodyType, float restCoeficient)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType bodyType, float restCoeficient, bool sensor)
 {
 	b2BodyDef body;
 	body.type = bodyType;
@@ -87,10 +87,13 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType bodyT
 
 	b2CircleShape shape;
 	shape.m_radius = PIXEL_TO_METERS(radius);
+	
 	b2FixtureDef fixture;
 	fixture.shape = &shape;
 	fixture.density = 1.0f;
 	fixture.restitution = restCoeficient;
+	if (sensor)
+		fixture.isSensor;
 
 	b->CreateFixture(&fixture);
 
@@ -626,6 +629,12 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 	pbodyB->body = bodyB;
 	bodyB->SetUserData(pbodyB);
 	pbodyB->width = pbodyB->height = 0;
+}
+
+void ModulePhysics::CreateP_Holes()
+{
+	App->scene_intro->hole_1 = CreateCircle(152, 122, 50, b2_staticBody, false);
+	App->scene_intro->hole_2 = CreateCircle(118, 162, 50, b2_staticBody, false);
 }
 
 void ModulePhysics::MaxSpeedCheckP(PhysBody * Pbody)

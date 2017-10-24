@@ -45,7 +45,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType bodyType, float restCoeficient = 0.5f);
+	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType bodyType, float restCoeficient = 0.5f, bool sensor = false);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type, bool fixture, float restCoeficient = 0.5f);
 	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType type, float restCoeficient = 0.5f);
@@ -53,6 +53,7 @@ public:
 	void CreateBouncers();
 	void CreateSpring();
 	void CreateP_Flipper(PhysBody* bodyA, PhysBody* bodyB, bool rightside);
+	void CreateP_Holes();
 	void MaxSpeedCheckP(PhysBody* Pbody);
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
