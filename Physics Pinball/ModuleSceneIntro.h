@@ -21,9 +21,6 @@ public:
 	void Stopped_ball_timer();
 
 public:
-	p2List<PhysBody*> boxes;
-	p2List<PhysBody*> ricks;
-
 	PhysBody* pinball_rect;
 	PhysBody* spring;
 	PhysBody* springPivot;
@@ -58,12 +55,14 @@ public:
 	Animation light;
 	
 	SDL_Texture* circle;
-	SDL_Texture* box;
-	SDL_Texture* rick;
 	SDL_Texture* pinball_tex;
+	SDL_Texture* upper_pinball_tex;
 	SDL_Texture* flipper_tex;
 	SDL_Texture* lights_tex;
+
+	SDL_Texture* spring_tex;
 	uint bonus_fx;
+	uint flipper_fx;
 	p2Point<int> ray;
 	bool ray_on;
 	bool ball_active;

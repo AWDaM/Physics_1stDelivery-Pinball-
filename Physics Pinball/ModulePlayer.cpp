@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModulePlayer.h"
 #include "ModulePhysics.h"
+#include "ModuleAudio.h"
 #include "ModuleSceneIntro.h"
 #include "ModuleWindow.h"
 #include "p2SString.h"
@@ -92,6 +93,8 @@ void ModulePlayer::SpawnNextBall()
 
 void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	App->audio->PlayFx(App->scene_intro->bonus_fx);
+
 	App->player->score += bodyB->score;
 
 	if (bodyB == App->scene_intro->dyingSensor || bodyA == App->scene_intro->dyingSensor)
