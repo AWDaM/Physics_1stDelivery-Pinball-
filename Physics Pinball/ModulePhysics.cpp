@@ -74,6 +74,29 @@ update_status ModulePhysics::PreUpdate()
 		}
 	}
 
+	if (App->scene_intro->ball && App->scene_intro->ball->to_destroy)
+	{
+		if (App->scene_intro->ball->body->GetType() == b2_dynamicBody)
+		{
+			int x, y;
+			App->scene_intro->ball->GetPosition(x, y);
+			world->DestroyBody(App->scene_intro->ball->body);
+			App->scene_intro->ball = CreateCircle(x, y, App->scene_intro->ball_radius, b2_staticBody);
+		}
+
+		if (App->scene_intro->ball->body->GetType() == b2_staticBody)
+		{
+			int x, y;
+			App->scene_intro->ball->GetPosition(x, y);
+			world->DestroyBody(App->scene_intro->ball->body);
+			App->scene_intro->ball = CreateCircle(x, y, App->scene_intro->ball_radius, b2_dynamicBody);
+			App->scene_intro->ball_active = true;
+			App->scene_intro->ball->listener = this;
+			App->scene_intro->ball->body->SetBullet(true);
+		}
+		App->scene_intro->ball->to_destroy = false;
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -93,7 +116,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType bodyT
 	fixture.density = 1.0f;
 	fixture.restitution = restCoeficient;
 	if (sensor)
-		fixture.isSensor;
+		fixture.isSensor = true;
 
 	b->CreateFixture(&fixture);
 
@@ -633,8 +656,8 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 
 void ModulePhysics::CreateP_Holes()
 {
-	App->scene_intro->hole_1 = CreateCircle(152, 122, 50, b2_staticBody, false);
-	App->scene_intro->hole_2 = CreateCircle(118, 162, 50, b2_staticBody, false);
+	App->scene_intro->hole_1 = CreateCircle(152, 122, 50, b2_staticBody, 0.5, true);
+	App->scene_intro->hole_2 = CreateCircle(118, 162, 50, b2_staticBody, 0.5, true);
 }
 
 void ModulePhysics::MaxSpeedCheckP(PhysBody * Pbody)
@@ -728,62 +751,11 @@ update_status ModulePhysics::PostUpdate()
 				break;
 			}
 
-			// TODO 1: If mouse button 1 is pressed ...
-			if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
-			{
-		
-			
-				if (f->TestPoint(mouse_position) && body_found == nullptr)
-				{
-					LOG("asdjklasdasdf")
-						body_found = b;
-		
 				
-					
-				}
-					
-			}
-			
-		
 			// test if the current body contains mouse position
 		}
 	}
 
-if (body_found != nullptr && mouse_joint == nullptr)
-{
-	b2MouseJointDef def;
-	def.bodyA = ground;
-	def.bodyB = body_found;
-	def.target = mouse_position;
-	def.dampingRatio = 0.5f;
-	def.frequencyHz = 2.0f;
-	def.maxForce = 100.0f * body_found->GetMass();
-	mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
-}
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && mouse_joint != nullptr)
-	{
-		mouse_joint->SetTarget(mouse_position);		
-		//App->render->DrawLine();
-
-	}
-	// If a body was selected we will attach a mouse joint to it
-	// so we can pull it around
-	// TODO 2: If a body was selected, create a mouse joint
-	// using mouse_joint class property
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && mouse_joint != nullptr)
-	{
-
-		//App->render->DrawLine();
-		world->DestroyJoint(mouse_joint);
-		mouse_joint = nullptr;
-		body_found = nullptr;
-	}
-
-
-	// TODO 3: If the player keeps pressing the mouse button, update
-	// target position and draw a red line between both anchor points
-
-	// TODO 4: If the player releases the mouse button, destroy the joint
 
 	return UPDATE_CONTINUE;
 }

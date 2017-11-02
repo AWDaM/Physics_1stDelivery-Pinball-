@@ -54,7 +54,7 @@ bool ModuleSceneIntro::Start()
 
 	ball_active = false;
 	ball_stopped = false;
-
+	total_stoptime = 3000;
 	return ret;
 }
 
@@ -78,7 +78,7 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !ball_active)
 	{
-		ball = App->physics->CreateCircle(465, 640, 10, b2_dynamicBody);
+		ball = App->physics->CreateCircle(465, 640, ball_radius, b2_dynamicBody);
 		ball_active = true;
 		ball->listener = this;
 		ball->body->SetBullet(true);
@@ -161,9 +161,15 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyB == dyingSensor)
 		SpawnNextBall();
 	
-	if (bodyB == hole_1 || bodyB == hole_2)
+	if (bodyB == hole_1)
 	{
-		bodyA->body->SetType(b2_staticBody);
+		ball->to_destroy = true;
+		ball_stopped = true;
+		initial_time = SDL_GetTicks();
+	}
+	if (bodyB == hole_2)
+	{
+		ball->to_destroy = true;
 		ball_stopped = true;
 		initial_time = SDL_GetTicks();
 	}
@@ -190,9 +196,9 @@ void ModuleSceneIntro::SpawnNextBall()
 
 void ModuleSceneIntro::Stopped_ball_timer()
 {
-	if (initial_time + SDL_GetTicks() >= total_stoptime)
+	if (SDL_GetTicks() - initial_time >= total_stoptime)
 	{
-		ball->body->SetType(b2_dynamicBody);
 		ball_stopped = false;
+		ball->to_destroy = true;
 	}
 }
