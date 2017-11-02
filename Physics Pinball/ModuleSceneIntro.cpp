@@ -10,7 +10,7 @@
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	circle = box = rick = NULL;
+	circle = NULL;
 	ray_on = false;
 
 }
@@ -27,10 +27,10 @@ bool ModuleSceneIntro::Start()
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	circle = App->textures->Load("pinball/wheel.png"); 
-	box = App->textures->Load("pinball/crate.png");
-	rick = App->textures->Load("pinball/rick_head.png");
 	pinball_tex = App->textures->Load("pinball/Pinball small.png");
+	upper_pinball_tex = App->textures->Load("pinball/UperLayer.png");
 	flipper_tex = App->textures->Load("pinball/flipper.png");
+	spring_tex = App->textures->Load("pinball/spring.png");
 
 	pinball_rect = App->physics->CreateRectangle(492/2, 798/2, 492, 798, b2_staticBody, false);
 
@@ -52,6 +52,7 @@ bool ModuleSceneIntro::Start()
 	dyingSensor = App->physics->CreateRectangleSensor(200, 850, 700, 100);
 
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
+	flipper_fx = App->audio->LoadFx("pinball/flipper.wav");
 
 	ball_active = false;
 	maintainBallStopped = false;
@@ -70,13 +71,6 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	/*if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		ray_on = !ray_on;
-		ray.x = App->input->GetMouseX();
-		ray.y = App->input->GetMouseY();
-	}*/
-
 	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		App->player->score = 0;
@@ -88,11 +82,13 @@ update_status ModuleSceneIntro::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
+		App->audio->PlayFx(flipper_fx);
 		Rflipper_rectangle->body->ApplyTorque(500, true);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
+		App->audio->PlayFx(flipper_fx);
 		Lflipper_rectangle->body->ApplyTorque(-500, true);
 	}
 
@@ -127,6 +123,9 @@ update_status ModuleSceneIntro::Update()
 	pinball_rect->GetPosition(x, y);
 	App->renderer->Blit(pinball_tex, x, y, NULL, 1.0f);
 
+	spring->GetPosition(x, y);
+	App->renderer->Blit(spring_tex, x, y, NULL, 1.0f);
+
 	Lflipper_circle->GetPosition(x, y);
 	App->renderer->Blit(flipper_tex, x - 75, y - 15, NULL, 1.0f, Lflipper_rectangle->GetRotation());
 	Rflipper_circle->GetPosition(x, y);
@@ -134,8 +133,11 @@ update_status ModuleSceneIntro::Update()
 
 	if(App->player->ball)App->renderer->Blit(circle, App->player->ballPossition.x, App->player->ballPossition.y, NULL, 1.0F, App->player->ball->GetRotation());
 
+	pinball_rect->GetPosition(x, y);
+	App->renderer->Blit(upper_pinball_tex, x, y, NULL, 1.0f);
+
 	// ray -----------------
-	if(ray_on == true)
+	/*if(ray_on == true)
 	{
 		fVector destination(mouse.x-ray.x, mouse.y-ray.y);
 		destination.Normalize();
@@ -145,36 +147,14 @@ update_status ModuleSceneIntro::Update()
 
 		if(normal.x != 0.0f)
 			App->renderer->DrawLine(ray.x + destination.x, ray.y + destination.y, ray.x + destination.x + normal.x * 25.0f, ray.y + destination.y + normal.y * 25.0f, 100, 255, 100);
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	App->player->score += bodyB->score;
-	
-	if (bodyA == hole_1 || bodyA == hole_2)
-	{
-		App->player->toDestroy = true;
-		maintainBallStopped = true;
-		initial_time = SDL_GetTicks();
-	}
 
-	//App->audio->PlayFx(bonus_fx);
-
-	/*
-	if(bodyA)
-	{
-		bodyA->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
-	}
-
-	if(bodyB)
-	{
-		bodyB->GetPosition(x, y);
-		App->renderer->DrawCircle(x, y, 50, 100, 100, 100);
-	}*/
 }
 
 
