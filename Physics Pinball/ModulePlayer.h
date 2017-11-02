@@ -18,10 +18,15 @@ public:
 	void SpawnNextBall();
 
 	void youDied();
-
+	
 public:
 	PhysBody* ball;
+	int i = 0;
+	int highscore;
 	int score;
 	int lives;
 	bool youFell;
+	bool isInGame;
+	bool toDestroy;
+	iPoint ballPossition;
 };

@@ -61,7 +61,9 @@ public:
 	p2Point<int> ray;
 	bool ray_on;
 	bool ball_active;
-	bool ball_stopped = false;
+	bool maintainBallStopped = false;
+	bool stopBall = false;
 	uint initial_time;
-	uint total_stoptime = 3;
+	uint total_stoptime = 3000;
+	uint16_t ball_radius = 10;
 };

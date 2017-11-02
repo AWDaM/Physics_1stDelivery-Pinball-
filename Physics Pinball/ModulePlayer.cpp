@@ -20,6 +20,9 @@ bool ModulePlayer::Start()
 	score = 00000;
 	lives = 3;
 	youFell = false;
+	isInGame = false;
+	toDestroy = false;
+
 	return true;
 }
 
@@ -41,22 +44,38 @@ void ModulePlayer::CreateBall()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
+	if (ball)ball->GetPosition(ballPossition.x, ballPossition.y);
+
+	if (toDestroy)
+		App->physics->DestroyBall(), toDestroy = false;
+
+	p2SString* tmp;
+
 	if (lives > 0)
-	{
-		p2SString* tmp = new p2SString("Current score: %i", score);
-		App->window->SetTitle(tmp->GetString());
-	}
+		tmp = new p2SString("Lives left: %d || Current score: %i", lives, score);
+	else if (i < 50)
+		tmp = new p2SString("Final score: %i || Highest Score: %d || Press 1 to play again.", score, highscore);
+	else
+		tmp = new p2SString("YOU LOST");
+
+
+	if (++i > 100)i = 0;
+	App->window->SetTitle(tmp->GetString());
 
 	if (youFell)
 		SpawnNextBall();
+
 
 	return UPDATE_CONTINUE;
 }
 
 void ModulePlayer::youDied()
 {
-	p2SString* tmp = new p2SString("You lost. Final score: %i. Press NOTHING to play again.", score);
-	App->window->SetTitle(tmp->GetString());
+	if (score > highscore)highscore = score;
+
+	
+
+	isInGame = false;
 }
 
 void ModulePlayer::SpawnNextBall()
@@ -73,6 +92,16 @@ void ModulePlayer::SpawnNextBall()
 
 void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	App->player->score += bodyB->score;
+
 	if (bodyB == App->scene_intro->dyingSensor || bodyA == App->scene_intro->dyingSensor)
 		youFell = true;
+
+	if (bodyB == App->scene_intro->hole_1 || bodyB == App->scene_intro->hole_2)
+	{
+		toDestroy = true;
+		App->scene_intro->maintainBallStopped = true;
+		App->scene_intro->stopBall = true;
+		App->scene_intro->initial_time = SDL_GetTicks();
+	}
 }

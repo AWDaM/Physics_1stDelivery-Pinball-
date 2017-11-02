@@ -53,8 +53,8 @@ bool ModuleSceneIntro::Start()
 	bonus_fx = App->audio->LoadFx("pinball/bonus.wav");
 
 	ball_active = false;
-	ball_stopped = false;
-
+	maintainBallStopped = false;
+	total_stoptime = 3000;
 	return ret;
 }
 
@@ -76,11 +76,13 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}*/
 
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->player->ball)
+	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->player->isInGame)
 	{
+		App->player->score = 0;
+		App->player->lives = 3;
+		App->player->isInGame = true;
 		App->player->CreateBall();
 	}
-
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
@@ -97,12 +99,12 @@ update_status ModuleSceneIntro::Update()
 		spring->body->ApplyLinearImpulse({ 0, 10 }, { 0,0 }, true);
 	}
 
-	if (ball_stopped)
+	if (maintainBallStopped)
 	{
 		Stopped_ball_timer();
 	}
 	// Prepare for raycast ------------------------------------------------------
-	if (ball_active)
+	if (App->player->ball)
 	{
 		App->physics->MaxSpeedCheckP(App->player->ball);
 	}
@@ -116,12 +118,6 @@ update_status ModuleSceneIntro::Update()
 	fVector normal(0.0f, 0.0f);
 
 	// All draw functions ------------------------------------------------------
-	if (ball_active)
-	{
-		int x, y;
-		App->player->ball->GetPosition(x, y);
-		App->renderer->Blit(circle, x, y, NULL, 1.0F, App->player->ball->GetRotation());
-	}
 
 
 	//-----------------------Blit the pinball texture
@@ -133,6 +129,8 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(flipper_tex, x - 75, y - 15, NULL, 1.0f, Lflipper_rectangle->GetRotation());
 	Rflipper_circle->GetPosition(x, y);
 	App->renderer->Blit(flipper_tex, x - 65, y - 15, NULL, 1.0f, Rflipper_rectangle->GetRotation(), SDL_FLIP_HORIZONTAL);
+
+	if(App->player->ball)App->renderer->Blit(circle, App->player->ballPossition.x, App->player->ballPossition.y, NULL, 1.0F, App->player->ball->GetRotation());
 
 	// ray -----------------
 	if(ray_on == true)
@@ -152,14 +150,15 @@ update_status ModuleSceneIntro::Update()
 
 void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	App->player->score += bodyA->score + bodyB->score;
-
-	if (bodyB == hole_1 || bodyB == hole_2)
+	App->player->score += bodyB->score;
+	
+	if (bodyA == hole_1 || bodyA == hole_2)
 	{
-		bodyA->body->SetType(b2_staticBody);
-		ball_stopped = true;
+		App->player->toDestroy = true;
+		maintainBallStopped = true;
 		initial_time = SDL_GetTicks();
 	}
+
 	//App->audio->PlayFx(bonus_fx);
 
 	/*
@@ -180,9 +179,14 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 void ModuleSceneIntro::Stopped_ball_timer()
 {
-	if (initial_time + SDL_GetTicks() >= total_stoptime)
+	if (stopBall)
+		App->player->ball = App->physics->CreateCircle(App->player->ballPossition.x + ball_radius, App->player->ballPossition.y + ball_radius, 10, b2_staticBody), stopBall = false;
+
+	if (SDL_GetTicks() - initial_time >= total_stoptime)
 	{
-		App->player->ball->body->SetType(b2_dynamicBody);
-		ball_stopped = false;
+		maintainBallStopped = false;
+		App->physics->DestroyBall();
+		App->player->ball = App->physics->CreateCircle(App->player->ballPossition.x, App->player->ballPossition.y, 10, b2_dynamicBody);
+		App->player->ball->body->ApplyLinearImpulse({ 0,3 }, { 0,0 }, true);
 	}
 }
