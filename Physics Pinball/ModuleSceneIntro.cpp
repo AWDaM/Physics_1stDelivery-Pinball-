@@ -78,7 +78,7 @@ update_status ModuleSceneIntro::Update()
 		App->player->score = 0;
 		App->player->lives = 3;
 		App->player->isInGame = true;
-		if(App->player->ball)App->physics->DestroyBall();
+		//if(App->player->ball)App->physics->DestroyBall();
 		App->player->CreateBall();
 	}
 

@@ -159,7 +159,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, Animation* anim)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, Animation* anim, int score)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -183,11 +183,11 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	pbody->width = width;
 	pbody->height = height;
 	pbody->anim = anim;
-
+	pbody->score = score;
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateCircleSensor(int x, int y, int radius, Animation* anim)
+PhysBody* ModulePhysics::CreateCircleSensor(int x, int y, int radius, Animation* anim, int score)
 {
 	b2BodyDef body;
 	body.type = b2_staticBody;
@@ -211,6 +211,7 @@ PhysBody* ModulePhysics::CreateCircleSensor(int x, int y, int radius, Animation*
 	pbody->width = pbody->height = radius;
 
 	pbody->anim = anim;
+	pbody->score = score;
 	return pbody;
 }
 
@@ -705,29 +706,29 @@ void ModulePhysics::CreateP_Lights()
 	App->scene_intro->light.loop = false;
 	App->scene_intro->light.speed = 0.005f;
 
-	App->scene_intro->Lights.add(CreateCircleSensor(190,90, 7, &App->scene_intro->light));
-	App->scene_intro->Lights.add(CreateCircleSensor(215, 90, 7, &App->scene_intro->light));
-	App->scene_intro->Lights.add(CreateCircleSensor(255, 90, 7, &App->scene_intro->light));
-	App->scene_intro->Lights.add(CreateCircleSensor(280, 90, 7, &App->scene_intro->light));
+	App->scene_intro->Lights.add(CreateCircleSensor(190,90, 7, &App->scene_intro->light, 25));
+	App->scene_intro->Lights.add(CreateCircleSensor(215, 90, 7, &App->scene_intro->light, 25));
+	App->scene_intro->Lights.add(CreateCircleSensor(255, 90, 7, &App->scene_intro->light,25));
+	App->scene_intro->Lights.add(CreateCircleSensor(280, 90, 7, &App->scene_intro->light,25));
 	//two near the holes
-	App->scene_intro->Lights.add(CreateCircleSensor(115, 190, 7, &App->scene_intro->light));
-	App->scene_intro->Lights.add(CreateCircleSensor(142, 153, 7, &App->scene_intro->light));
+	App->scene_intro->Lights.add(CreateCircleSensor(115, 190, 7, &App->scene_intro->light,25));
+	App->scene_intro->Lights.add(CreateCircleSensor(142, 153, 7, &App->scene_intro->light,25));
 	//two under the holes
-	App->scene_intro->Lights.add(CreateCircleSensor(110, 256, 7, &App->scene_intro->light));
-	App->scene_intro->Lights.add(CreateCircleSensor(113, 285, 7, &App->scene_intro->light));
+	App->scene_intro->Lights.add(CreateCircleSensor(110, 256, 7, &App->scene_intro->light,25));
+	App->scene_intro->Lights.add(CreateCircleSensor(113, 285, 7, &App->scene_intro->light,25));
 	//two down at the left
-	App->scene_intro->Lights.add(CreateCircleSensor(95, 600, 7, &App->scene_intro->light));
-	App->scene_intro->Lights.add(CreateCircleSensor(30, 620, 7, &App->scene_intro->light));
+	App->scene_intro->Lights.add(CreateCircleSensor(95, 600, 7, &App->scene_intro->light,25));
+	App->scene_intro->Lights.add(CreateCircleSensor(30, 620, 7, &App->scene_intro->light,25));
 	//one down at the right
-	App->scene_intro->Lights.add(CreateCircleSensor(382, 600, 7, &App->scene_intro->light));
+	App->scene_intro->Lights.add(CreateCircleSensor(382, 600, 7, &App->scene_intro->light,25));
 	//one in the "upper"part
-	App->scene_intro->Lights.add(CreateCircleSensor(25, 377, 7, &App->scene_intro->light));
+	App->scene_intro->Lights.add(CreateCircleSensor(25, 377, 7, &App->scene_intro->light,25));
 	//one at the entrance of the tunnel
-	App->scene_intro->Lights.add(CreateRectangleSensor(380, 300, 100, 10, &App->scene_intro->light));
+	App->scene_intro->Lights.add(CreateRectangleSensor(380, 300, 100, 10, &App->scene_intro->light,25));
 	//the three next to the tunnel
-	App->scene_intro->Lights.add(CreateCircleSensor(347, 170, 7, &App->scene_intro->light));
-	App->scene_intro->Lights.add(CreateCircleSensor(335, 150, 7, &App->scene_intro->light));
-	App->scene_intro->Lights.add(CreateCircleSensor(355, 190, 7, &App->scene_intro->light));
+	App->scene_intro->Lights.add(CreateCircleSensor(347, 170, 7, &App->scene_intro->light,25));
+	App->scene_intro->Lights.add(CreateCircleSensor(335, 150, 7, &App->scene_intro->light,25));
+	App->scene_intro->Lights.add(CreateCircleSensor(355, 190, 7, &App->scene_intro->light,25));
 
 }
 

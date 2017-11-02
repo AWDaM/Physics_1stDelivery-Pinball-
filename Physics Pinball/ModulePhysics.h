@@ -52,8 +52,8 @@ public:
 
 	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType bodyType, float restCoeficient = 0.2f, bool sensor = false);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type, bool fixture, float restCoeficient = 0.2f);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, Animation* anim = nullptr);
-	PhysBody* CreateCircleSensor(int x, int y, int radius, Animation* anim = nullptr);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, Animation* anim = nullptr, int score = 0);
+	PhysBody* CreateCircleSensor(int x, int y, int radius, Animation* anim = nullptr, int score = 0);
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType type, float restCoeficient = 0.2f);
 	void CreateP_Boundaries();
 	void CreateBouncers();
