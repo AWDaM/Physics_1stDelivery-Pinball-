@@ -514,10 +514,11 @@ App->scene_intro->pinballb_4 = CreateChain(0, 0, Pinballb_4, 12, b2_staticBody);
 	// Pivot 0, 0
 	int Pinballb_8[10] = {
 		203, 102,
-		202, 156,
+		203, 156,
 		266, 156,
 		266, 100,
 		237, 92
+
 	};
 
 	App->scene_intro->pinballb_8 = CreateChain(0, 0, Pinballb_8, 10, b2_staticBody);

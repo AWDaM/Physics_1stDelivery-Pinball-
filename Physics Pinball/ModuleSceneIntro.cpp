@@ -77,11 +77,12 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}*/
 
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->player->isInGame)
+	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		App->player->score = 0;
 		App->player->lives = 3;
 		App->player->isInGame = true;
+		if(App->player->ball)App->physics->DestroyBall();
 		App->player->CreateBall();
 	}
 
