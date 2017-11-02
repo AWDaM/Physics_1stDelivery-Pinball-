@@ -514,10 +514,10 @@ void ModulePhysics::CreateP_Boundaries()
 	// Pivot 0, 0
 	int Pinballb_8[10] = {
 		203, 102,
-		202, 156,
+		203, 156,
 		266, 156,
-		266, 100,
-		237, 86
+		266, 102,
+		237, 98
 	};
 
 	App->scene_intro->pinballb_8 = CreateChain(0, 0, Pinballb_8, 10, b2_staticBody);
