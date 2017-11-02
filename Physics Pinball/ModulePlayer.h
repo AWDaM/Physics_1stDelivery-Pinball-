@@ -15,4 +15,5 @@ public:
 
 public:
 	int score;
+	bool isAlive = true;
 };
