@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModulePhysics.h"
+#include "ModulePlayer.h"
 #include "ModuleRender.h"
 #include "ModuleSceneIntro.h"
 #include "p2Point.h"
@@ -872,4 +873,9 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 
 	if(physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA);
+}
+
+void ModulePhysics::DestroyBall()
+{
+	world->DestroyBody(App->player->ball->body);
 }

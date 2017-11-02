@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 class PhysBody;
+class SDL_Texture;
 
 class ModuleSceneIntro : public Module
 {
@@ -16,11 +17,9 @@ public:
 	update_status Update();
 	bool CleanUp();
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
-	void SpawnNextBall();
 	void Stopped_ball_timer();
 
 public:
-	PhysBody* ball;
 	p2List<PhysBody*> boxes;
 	p2List<PhysBody*> ricks;
 

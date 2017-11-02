@@ -12,8 +12,16 @@ public:
 	bool Start();
 	update_status Update();
 	bool CleanUp();
+	void CreateBall();
+	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+
+	void SpawnNextBall();
+
+	void youDied();
 
 public:
+	PhysBody* ball;
 	int score;
-	bool isAlive = true;
+	int lives;
+	bool youFell;
 };

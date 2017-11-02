@@ -57,7 +57,7 @@ public:
 	void MaxSpeedCheckP(PhysBody* Pbody);
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
-
+	void DestroyBall();
 private:
 
 	bool found_body = false;

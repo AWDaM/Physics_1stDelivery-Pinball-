@@ -76,13 +76,9 @@ update_status ModuleSceneIntro::Update()
 		ray.y = App->input->GetMouseY();
 	}*/
 
-	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !ball_active)
+	if(App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && !App->player->ball)
 	{
-		ball = App->physics->CreateCircle(465, 640, 10, b2_dynamicBody);
-		ball_active = true;
-		ball->listener = this;
-		ball->body->SetBullet(true);
-		LOG("MASS:%i", ball->body->GetMass());
+		App->player->CreateBall();
 	}
 
 
@@ -108,7 +104,7 @@ update_status ModuleSceneIntro::Update()
 	// Prepare for raycast ------------------------------------------------------
 	if (ball_active)
 	{
-		App->physics->MaxSpeedCheckP(ball);
+		App->physics->MaxSpeedCheckP(App->player->ball);
 	}
 
 
@@ -123,8 +119,8 @@ update_status ModuleSceneIntro::Update()
 	if (ball_active)
 	{
 		int x, y;
-		ball->GetPosition(x, y);
-		App->renderer->Blit(circle, x, y, NULL, 1.0F, ball->GetRotation());
+		App->player->ball->GetPosition(x, y);
+		App->renderer->Blit(circle, x, y, NULL, 1.0F, App->player->ball->GetRotation());
 	}
 
 
@@ -158,9 +154,6 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	App->player->score += bodyA->score + bodyB->score;
 
-	if (bodyB == dyingSensor)
-		SpawnNextBall();
-	
 	if (bodyB == hole_1 || bodyB == hole_2)
 	{
 		bodyA->body->SetType(b2_staticBody);
@@ -183,16 +176,13 @@ void ModuleSceneIntro::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}*/
 }
 
-void ModuleSceneIntro::SpawnNextBall()
-{
-	
-}
+
 
 void ModuleSceneIntro::Stopped_ball_timer()
 {
 	if (initial_time + SDL_GetTicks() >= total_stoptime)
 	{
-		ball->body->SetType(b2_dynamicBody);
+		App->player->ball->body->SetType(b2_dynamicBody);
 		ball_stopped = false;
 	}
 }
