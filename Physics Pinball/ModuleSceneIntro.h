@@ -52,6 +52,9 @@ public:
 	PhysBody* Lflipper_circle;
 	PhysBody* Lflipper_rectangle;
 
+	p2List<PhysBody*> Lights;
+	PhysBody* light;
+
 	SDL_Texture* circle;
 	SDL_Texture* box;
 	SDL_Texture* rick;

@@ -460,7 +460,7 @@ void ModulePhysics::CreateP_Boundaries()
 		135, 398,
 		110, 374
 	};
-	App->scene_intro->pinballb_4 = CreateChain(0, 0, Pinballb_4, 12, b2_staticBody);
+App->scene_intro->pinballb_4 = CreateChain(0, 0, Pinballb_4, 12, b2_staticBody);
 
 
 	// Pivot 0, 0
@@ -517,7 +517,7 @@ void ModulePhysics::CreateP_Boundaries()
 		202, 156,
 		266, 156,
 		266, 100,
-		237, 86
+		237, 92
 	};
 
 	App->scene_intro->pinballb_8 = CreateChain(0, 0, Pinballb_8, 10, b2_staticBody);
@@ -684,10 +684,40 @@ void ModulePhysics::CreateP_Flipper(PhysBody* pbodyA, PhysBody* pbodyB, bool rig
 
 void ModulePhysics::CreateP_Holes()
 {
-	App->scene_intro->hole_1 = CreateCircleSensor(145, 115, 1);
+	App->scene_intro->hole_1 = CreateCircleSensor(150, 120, 1);
 	App->scene_intro->hole_1->score = 125;
-	App->scene_intro->hole_2 = CreateCircleSensor(110, 155, 1);
+	App->scene_intro->hole_2 = CreateCircleSensor(115, 160, 1);
 	App->scene_intro->hole_2->score = 125;
+
+}
+
+void ModulePhysics::CreateP_Lights()
+{
+	//Four at the top
+	App->scene_intro->Lights.add(CreateCircleSensor(190,90, 7));
+	App->scene_intro->Lights.add(CreateCircleSensor(215, 90, 7));
+	App->scene_intro->Lights.add(CreateCircleSensor(255, 90, 7));
+	App->scene_intro->Lights.add(CreateCircleSensor(280, 90, 7));
+	//two near the holes
+	App->scene_intro->Lights.add(CreateCircleSensor(115, 190, 7));
+	App->scene_intro->Lights.add(CreateCircleSensor(142, 153, 7));
+	//two under the holes
+	App->scene_intro->Lights.add(CreateCircleSensor(110, 256, 7));
+	App->scene_intro->Lights.add(CreateCircleSensor(113, 285, 7));
+	//two down at the left
+	App->scene_intro->Lights.add(CreateCircleSensor(95, 600, 7));
+	App->scene_intro->Lights.add(CreateCircleSensor(30, 620, 7));
+	//one down at the right
+	App->scene_intro->Lights.add(CreateCircleSensor(382, 600, 7));
+	//one in the "upper"part
+	App->scene_intro->Lights.add(CreateCircleSensor(25, 377, 7));
+	//one at the entrance of the tunnel
+	App->scene_intro->Lights.add(CreateRectangleSensor(380, 300, 100, 10));
+	//the three next to the tunnel
+	App->scene_intro->Lights.add(CreateCircleSensor(347, 170, 7));
+	App->scene_intro->Lights.add(CreateCircleSensor(335, 150, 7));
+	App->scene_intro->Lights.add(CreateCircleSensor(355, 190, 7));
+
 
 }
 
