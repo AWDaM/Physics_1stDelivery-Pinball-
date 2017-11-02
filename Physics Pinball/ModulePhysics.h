@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "Box2D/Box2D/Box2D.h"
 
+
+
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
 
@@ -64,8 +66,10 @@ private:
 
 	bool found_body = false;
 	bool debug;
+	
 	b2World* world;
 	b2MouseJoint* mouse_joint;
 	b2Body* ground;
 	b2Body* body_found = nullptr;
+
 };

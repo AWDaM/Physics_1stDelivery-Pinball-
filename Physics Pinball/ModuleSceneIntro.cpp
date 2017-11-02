@@ -31,6 +31,7 @@ bool ModuleSceneIntro::Start()
 	rick = App->textures->Load("pinball/rick_head.png");
 	pinball_tex = App->textures->Load("pinball/Pinball small.png");
 	flipper_tex = App->textures->Load("pinball/flipper.png");
+	lights_tex = App->textures->Load("pinball/TopLights.png");
 
 	pinball_rect = App->physics->CreateRectangle(492/2, 798/2, 492, 798, b2_staticBody, false);
 
@@ -133,6 +134,17 @@ update_status ModuleSceneIntro::Update()
 	App->renderer->Blit(flipper_tex, x - 65, y - 15, NULL, 1.0f, Rflipper_rectangle->GetRotation(), SDL_FLIP_HORIZONTAL);
 
 	if(App->player->ball)App->renderer->Blit(circle, App->player->ballPossition.x, App->player->ballPossition.y, NULL, 1.0F, App->player->ball->GetRotation());
+
+	p2List_item<PhysBody*>* light = Lights.getFirst();
+	p2List_item<Animation*>* light_animation = lights.getFirst();
+	while (light != NULL || light_animation != NULL)
+	{
+		int x, y;
+		light->data->GetPosition(x, y);
+		App->renderer->Blit(lights_tex, x, y, &light_animation->data->GetCurrentFrame(),);
+		light = light->next;
+		light_animation = light_animation->next;
+	}
 
 	// ray -----------------
 	if(ray_on == true)

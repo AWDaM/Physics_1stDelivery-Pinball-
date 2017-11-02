@@ -72,6 +72,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="j1Animation.h" />
     <ClInclude Include="ModulePhysics.h" />
     <ClInclude Include="p2Defs.h" />
     <ClInclude Include="p2List.h" />

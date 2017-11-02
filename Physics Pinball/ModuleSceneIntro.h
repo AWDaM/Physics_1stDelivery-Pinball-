@@ -3,6 +3,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "Globals.h"
+#include "j1Animation.h"
 
 class PhysBody;
 class SDL_Texture;
@@ -53,13 +54,15 @@ public:
 	PhysBody* Lflipper_rectangle;
 
 	p2List<PhysBody*> Lights;
-	PhysBody* light;
-
+	p2List<Animation*>  lights;
+	Animation light;
+	
 	SDL_Texture* circle;
 	SDL_Texture* box;
 	SDL_Texture* rick;
 	SDL_Texture* pinball_tex;
 	SDL_Texture* flipper_tex;
+	SDL_Texture* lights_tex;
 	uint bonus_fx;
 	p2Point<int> ray;
 	bool ray_on;
