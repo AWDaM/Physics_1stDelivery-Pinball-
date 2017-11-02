@@ -12,7 +12,6 @@ ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Modul
 {
 	circle = NULL;
 	ray_on = false;
-
 }
 
 ModuleSceneIntro::~ModuleSceneIntro()
@@ -24,6 +23,7 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	App->audio->PlayMusic("pinball/bgm.ogg");
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	circle = App->textures->Load("pinball/wheel.png"); 
