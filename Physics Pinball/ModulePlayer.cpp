@@ -107,4 +107,9 @@ void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		App->scene_intro->stopBall = true;
 		App->scene_intro->initial_time = SDL_GetTicks();
 	}
+
+	if (App->scene_intro->Lights.find(bodyB) != -1)
+	{
+		bodyB->anim->current_frame = 0;
+	}
 }

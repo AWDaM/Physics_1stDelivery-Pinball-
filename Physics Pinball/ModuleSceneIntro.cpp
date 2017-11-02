@@ -137,14 +137,13 @@ update_status ModuleSceneIntro::Update()
 
 
 	p2List_item<PhysBody*>* light = Lights.getFirst();
-	p2List_item<Animation*>* light_animation = lights.getFirst();
-	while (light != NULL || light_animation != NULL)
+
+	while (light != NULL)
 	{
 		int x, y;
 		light->data->GetPosition(x, y);
-		App->renderer->Blit(lights_tex, x, y, &light_animation->data->GetCurrentFrame());
+		App->renderer->Blit(lights_tex, x, y, &light->data->anim->GetCurrentFrame());
 		light = light->next;
-		light_animation = light_animation->next;
 	}
 
 	pinball_rect->GetPosition(x, y);

@@ -15,6 +15,8 @@
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
 // Small class to return to other modules to track position and rotation of physics bodies
+class Animation;
+
 class PhysBody
 {
 public:
@@ -32,6 +34,7 @@ public:
 	Module* listener;
 	int score = 0;
 	b2Vec2 maxSpeed;
+	Animation* anim;
 
 };
 
@@ -49,8 +52,8 @@ public:
 
 	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType bodyType, float restCoeficient = 0.2f, bool sensor = false);
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type, bool fixture, float restCoeficient = 0.2f);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height);
-	PhysBody* CreateCircleSensor(int x, int y, int radius);
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, Animation* anim = nullptr);
+	PhysBody* CreateCircleSensor(int x, int y, int radius, Animation* anim = nullptr);
 	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType type, float restCoeficient = 0.2f);
 	void CreateP_Boundaries();
 	void CreateBouncers();
