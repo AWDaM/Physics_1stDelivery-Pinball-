@@ -698,11 +698,11 @@ void ModulePhysics::CreateP_Holes()
 void ModulePhysics::CreateP_Lights()
 {
 	//Four at the top
-	App->scene_intro->light.PushBack({18,0,20,20 });
+	App->scene_intro->light.PushBack({20,0,20,20 });
 	App->scene_intro->light.PushBack({ 0,0,20,20});
 	App->scene_intro->light.PushBack({20,20,20,20 });
 	App->scene_intro->light.PushBack({ 0,0,20,20 });
-	App->scene_intro->light.PushBack({ 18,0,20,20 });
+	App->scene_intro->light.PushBack({ 20,0,20,20 });
 	App->scene_intro->light.loop = false;
 	App->scene_intro->light.speed = 0.005f;
 

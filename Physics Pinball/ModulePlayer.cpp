@@ -93,8 +93,10 @@ void ModulePlayer::SpawnNextBall()
 
 void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	App->audio->PlayFx(App->scene_intro->bonus_fx);
-
+	if (bodyB == App->scene_intro->circleBouncer1 || bodyB == App->scene_intro->circleBouncer2 || bodyB == App->scene_intro->circleBouncer3 || bodyB == App->scene_intro->circleBouncer4 || bodyB == App->scene_intro->triangleBouncer1 || bodyB == App->scene_intro->triangleBouncer2)
+	{
+		App->audio->PlayFx(App->scene_intro->bonus_fx);
+	}
 	App->player->score += bodyB->score;
 
 	if (bodyB == App->scene_intro->dyingSensor || bodyA == App->scene_intro->dyingSensor)

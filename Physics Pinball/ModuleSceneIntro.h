@@ -69,6 +69,6 @@ public:
 	bool maintainBallStopped = false;
 	bool stopBall = false;
 	uint initial_time;
-	uint total_stoptime = 3000;
+	uint total_stoptime = 2000;
 	uint16_t ball_radius = 10;
 };

@@ -183,7 +183,7 @@ void ModuleSceneIntro::Stopped_ball_timer()
 		maintainBallStopped = false;
 		App->physics->DestroyBall();
 		App->player->ball = App->physics->CreateCircle(App->player->ballPossition.x, App->player->ballPossition.y, 10, b2_dynamicBody);
-		App->player->ball->body->ApplyLinearImpulse({ 3,3 }, { 0,0 }, true);
+		App->player->ball->body->ApplyLinearImpulse({ 0,1 }, { 0,0 }, true);
 		App->player->ball->body->SetBullet(true);
 	}
 }

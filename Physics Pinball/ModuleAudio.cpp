@@ -103,7 +103,8 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 	}
 	else
 	{
-		if(fade_time > 0.0f)
+		Mix_VolumeMusic(32);
+		if (fade_time > 0.0f)
 		{
 			if(Mix_FadeInMusic(music, -1, (int) (fade_time * 1000.0f)) < 0)
 			{
